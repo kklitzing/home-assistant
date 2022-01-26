@@ -2,19 +2,19 @@ default_config:
 panel_iframe:
   configurator:
     title: Configurator
-    icon: mdi:wrench
-    url: !secret configurator_url http://192.168.0.31:3218/ #CHANGE THIS IN SECRETS.YAML... for url: <hostip>:3218 substituted a link to my secrets.yaml file for clarity and ease of setup
+    icon: mdi:wrench #If you're altering this file because you don't want to use a secrets.yaml for some reason,
+    url: !secret configurator_url #change this line to   url: <hostip>:3218
     require_admin: true
   nodered:
     title: Node-Red
     icon: mdi:shuffle-variant
-    url: !secret nodered_url  #If, for some reason, you're choosing to alter this file because you don't want to use a secrets.yaml for some reason, change this line to   url: <hostip>:3218  e.g.,  url: 192.168.0.31:3218 
+    url: !secret nodered_url  #likewise, you will need to edit this line as well, replacing it with  url: <hostip>:3218  e.g.,  url: 192.168.0.31:3218 
     require_admin: true
 mqtt:
-  broker: 192.168.0.31 ##CHANGE THIS... substituted Pi's LAN IP address for <hostip>
+  broker: !secret hostip #CHANGE THIS... substituted Pi's LAN IP address for <hostip>
   
 recorder:
-  db_url: !secret ha_db_url #now referring to value of the key "ha_db_url" in my secrets file located in this same directory (secrets.yaml after removing .sample suffix)
+  db_url: !secret ha_db_url #again, this now refers to value of the key "ha_db_url" in my secrets file located in this same directory (secrets.yaml after removing .sample suffix)
+  #the original configuration appears below, commented out
   #db_url: mysql://homeassistant:<ha_dbdatabasepassword>@<hostip>/ha_db?charset=utf8
-  #^How the option was originally configured
   purge_keep_days: 30

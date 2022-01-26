@@ -4,7 +4,8 @@ My Home Assistant installation is modelled after this [very clear guide](https:/
 The beauty of setting up Home Assistant with `docker-compose` is that instead of remembering my configuration details, they are all just stored here in this repository as code (configuration as code)  
 
 ## How to use it
-In this repository, I have layed out the barebones 'skeleton' for a docker-compose setup of Home Assistant.  To get started, navigate to the directory where you want to locate your Home Assistant folder and clone my repo with the command `git clone https://github.com/kklitzing/home-assistant`  
+In this repository, I have layed out the barebones 'skeleton' for a docker-compose setup of Home Assistant.  To get started, navigate to the directory where you want to locate your Home Assistant folder and clone this repo with the command 
+>`git clone https://github.com/kklitzing/home-assistant`  
 
 Next, we have to necessarily customize the setup to you and your installation specifics (things like <hostip>, `uid` and `gid`, passwords, etc.).
 These include mainly [`configuration.yaml`](hass-config/configuration.yaml) and the [`docker-compose.yaml`](docker-compose.yaml) file.  

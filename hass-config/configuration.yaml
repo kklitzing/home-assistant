@@ -3,12 +3,12 @@ panel_iframe:
   configurator:
     title: Configurator
     icon: mdi:wrench
-    url: http://192.168.0.31:3218/ #CHANGE THIS... for url: <hostip> substituted ip address of my Pi on the LAN
+    url: !secret configurator_url http://192.168.0.31:3218/ #CHANGE THIS IN SECRETS.YAML... for url: <hostip>:3218 substituted a link to my secrets.yaml file for clarity and ease of setup
     require_admin: true
   nodered:
     title: Node-Red
     icon: mdi:shuffle-variant
-    url: http://192.168.0.31:1880/ #CHANGE THIS... for <hostip> substituted ip address of my Pi on the LAN
+    url: !secret nodered_url  #If, for some reason, you're choosing to alter this file because you don't want to use a secrets.yaml for some reason, change this line to   url: <hostip>:3218  e.g.,  url: 192.168.0.31:3218 
     require_admin: true
 mqtt:
   broker: 192.168.0.31 ##CHANGE THIS... substituted Pi's LAN IP address for <hostip>

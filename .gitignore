@@ -5,5 +5,5 @@
 secret*
 
 ##TRACKED##
-#we do, however, want to track changes to the example/template files
+#we do, however, want override these rules and track changes to the example/template files
 !*.example

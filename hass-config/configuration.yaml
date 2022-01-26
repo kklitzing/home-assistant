@@ -14,7 +14,7 @@ mqtt:
   broker: 192.168.0.31 ##CHANGE THIS... substituted Pi's LAN IP address for <hostip>
   
 recorder:
-  db_url: !secret ha_db_url #now referring to my secrets file located in this same directory (secrets.yaml after removing .sample suffix)
+  db_url: !secret ha_db_url #now referring to value of the key "ha_db_url" in my secrets file located in this same directory (secrets.yaml after removing .sample suffix)
   #db_url: mysql://homeassistant:<ha_dbdatabasepassword>@<hostip>/ha_db?charset=utf8
   #^How the option was originally configured
   purge_keep_days: 30

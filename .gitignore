@@ -1,0 +1,9 @@
+##UNTRACKED##
+#don't track .env
+.env
+#likewise, we want to untrack anything that begins with secret
+secret*
+
+##TRACKED##
+#we do, however, want to track changes to the example/template files
+!*.example

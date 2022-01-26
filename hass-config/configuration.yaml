@@ -1,0 +1,18 @@
+default_config:
+panel_iframe:
+  configurator:
+    title: Configurator
+    icon: mdi:wrench
+    url: http://192.168.0.31:3218/ #for <hostip> substituted ip address of my Pi on the LAN
+    require_admin: true
+  nodered:
+    title: Node-Red
+    icon: mdi:shuffle-variant
+    url: http://<hostip>:1880/ #for <hostip> substituted ip address of my Pi on the LAN
+    require_admin: true
+mqtt:
+  broker: 192.168.0.31
+  
+recorder:
+  db_url: mysql://homeassistant:<ha_dbdatabasepassword>@192.168.0.31/ha_db?charset=utf8 #substituted my ip and uh, maybe not password
+  purge_keep_days: 30

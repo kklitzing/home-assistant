@@ -1,7 +1,7 @@
 # home-assistant
 
 My Home Assistant installation is modelled after this [very clear guide](https://iotechonline.com/home-assistant-install-with-docker-compose/) from Jere's website iotechonline.com.  
-The beauty of setting up Home Assistant with `docker-compose` is that instead of remembering my configuration details, they are all just stored here in this repository as code (configuration as code)  
+The beauty of setting up Home Assistant with `docker-compose` is that it simplifies the installing, troubleshooting, and sharing your setup because the bulk of the setup details are already baked in to `docker-compose.yaml`  Rather than having to remember or document a slew of `apt-get` and multiple manual file changes, by using docker-compose in this project, you store much of the installation procedures and configuration as code.
 
 ## How to use it
 In this repository, I have layed out the barebones 'skeleton' for a docker-compose setup of Home Assistant.  

@@ -1,5 +1,6 @@
 # home-assistant
 In this repository, I have layed out the barebones 'skeleton' for a docker-compose setup of Home Assistant. My Home Assistant installation is modelled after this [very clear guide](https://iotechonline.com/home-assistant-install-with-docker-compose/) from Jere's website iotechonline.com.  
+This guide will get you all the way to the Home Assistant onboarding script.  There is still substantial work to do from here if you are setting up your smart home for the first time, but the gang at Home Assistant  running for Hserver with multiple s
 
 The beauty of setting up Home Assistant with `docker-compose` is that it simplifies the installing, troubleshooting, and sharing of your setup because the bulk of the details are already baked in to `docker-compose.yaml` which builds the server environment.  Rather than having to remember or document a slew of `apt-get` commands and multiple manual file changes, by using `docker-compose`, you store much of the installation procedures and configuration as code.
 
@@ -44,14 +45,16 @@ After editing the pertinent fields, using **Ctrl-O** will give you the option to
 [The guide I followed for the installation of Docker](https://phoenixnap.com/kb/docker-on-raspberry-pi) suggests adding your user to the Docker group so that containers can be run without requiring root priveleges.  This is generally the best practice.  
 If your regular user does not yet already have permissions for docker, then go ahead and execute te following command: 
 `sudo usermod -aG docker [user_name]` (In Raspberry Pi OS, the default user is 'pi' so `sudo usermod -aG docker pi`)
+  
+  *\*You must restart the user session (i.e., log out and back in) for this change to take effect.*
 
 > Depending on your Linux distribution, [some of these applications may already be installed on the host system](https://iotechonline.com/home-assistant-install-with-docker-compose/?cn-reloaded=1#comment-346). To avoid conflicts, you will have to uninstall them first (e.g., `sudo apt-get remove mosquitto`)
 - [x] Copy project folder
 - [x] modify `.env.sample` and `secrets.yaml.sample`
 - [x] execute docker-compose  
-## All done!
+## All done! :tada:
 If you open a web browser on the pi (or other computer on the LAN) you should now (or shortly) be able to navigate into the Home Assistant webserver at 'http://<hostip>:8123’
-to finish setup.
+to start onboarding.
   
   
   
@@ -86,6 +89,10 @@ to finish setup.
 ### How are you doing backups?
 I've modelled my backup script after that which user mwav3 [posted to the Home Assistant community forum](https://community.home-assistant.io/t/what-backup-strategy-when-running-home-assistant-in-docker/262539/10):  
 
+>If you run the container or core installation methods, you will need to manually make a backup of your configuration folder. Be aware that some of the files you need start with ., which is hidden by default from both ls (in SSH), in Windows Explorer, and macOS Finder. You’ll need to ensure that you’re viewing all files before you copy them.
+https://www.home-assistant.io/docs/configuration/
+
+  
 I make use of rsync, first make sure the directories exist
 `mkdir ~/backups/hassrsync -p`  
 *give my user:defaultgroup full permissions to the hass-config folder*  

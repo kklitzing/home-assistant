@@ -40,10 +40,12 @@ After editing the pertinent fields, using **Ctrl-O** will give you the option to
 - [ ] execute docker-compose  
 ### `docker-compose`
   When you're ready to build the stack change to the `cd ~/home-assistant`  
-`docker-compose up -d` (as root user?), if your regular user does not have permissions for docker then execute  
+`docker-compose up -d` (Jere says to run the command as root user, but notes this installation shouldn't be exposed to the web).  
+[The guide I followed for the installation of Docker](https://phoenixnap.com/kb/docker-on-raspberry-pi) suggests adding your user to the Docker group so that containers can be run without requiring root priveleges.  This is generally the best practice.  
+If your regular user does not yet already have permissions for docker, then go ahead and execute te following command: 
 `sudo usermod -aG docker [user_name]` (In Raspberry Pi OS, the default user is 'pi' so `sudo usermod -aG docker pi`)
 
-> Depending on the distro, [some of these applications may already be installed](https://iotechonline.com/home-assistant-install-with-docker-compose/?cn-reloaded=1#comment-346). To avoid conflicts, you will have to uninstall them first (e.g., `sudo apt-get remove mosquitto`)
+> Depending on your Linux distribution, [some of these applications may already be installed on the host system](https://iotechonline.com/home-assistant-install-with-docker-compose/?cn-reloaded=1#comment-346). To avoid conflicts, you will have to uninstall them first (e.g., `sudo apt-get remove mosquitto`)
 - [x] Copy project folder
 - [x] modify `.env.sample` and `secrets.yaml.sample`
 - [x] execute docker-compose  
@@ -62,3 +64,6 @@ to finish setup.
 *  **When you back up your setup, make sure to securely back up your secrets and passwords as well!**
 ### What are these `.keep` files?
 [`git` tracks content, not directories.](https://markmail.org/message/4eqjxx73opiswfis)  To adapt to this, I have included empty files `.keep` to the leaf nodes of the (otherwise) empty directories.  They can safely be ignored/deleted.
+
+### How do you make sure you have write permissions?
+  Within the directory, type `ls –l [file_name]`

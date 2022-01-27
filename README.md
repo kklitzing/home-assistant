@@ -8,7 +8,12 @@ The reddit user luna87 [put it well](https://www.reddit.com/r/homeassistant/comm
 >
 >You can then use Git to version control all of it. If I ever needed to move my home assistant install, all I would need to do is install docker, docker compose and git. Git clone my Git repository and docker-compose start. <br/>  
 # &nbsp; &nbsp; :ok_hand:
-## How to use it 
+## How to use it <br/>  Three steps
+- [ ] Copy project folder
+- [ ] modify `.env.sample` and `secrets.yaml.sample`
+- [ ] execute docker-compose  
+
+### Copy project  
 To get started, navigate to where you want to locate your Home Assistant folder.  
 `cd ~` (I prefer it to be in my user's home directory)  
 
@@ -16,15 +21,36 @@ Then, bring this repo folder and it's contents to your computer:
 `git clone https://github.com/kklitzing/home-assistant`  
 As long as there isn't already a folder with this name, you will now see the root folder for the project `/home-assistant/` within the working directory.  
 
+- [x] Copy project folder
+- [ ] modify `.env.sample` and `secrets.yaml.sample`
+- [ ] execute docker-compose  
+### Modify environmental variables  
 Next, we have to necessarily customize the setup to you and your installation specifics (things like <hostip>, uid and gid, passwords, etc.).
 This consists of having to edit (or replace) just two files: [`.env`](.env.sample) and [`secrets.yaml`](hass-config/secrets.yaml.sample)  
 
-You will have to make sure to remove the suffix `.sample` from these filenames as you follow [the guide](https://iotechonline.com/home-assistant-install-with-docker-compose/)
+  I opened the two files using the text editor `nano`:  
+`nano .env.sample` and `nano hass-config/secrets.yaml`  
+After editing the pertinent fields, using **Ctrl-O** will give you the option to save with a different filename.  Save without the suffix `.sample`
+>If you happened to save and close the files without renaming, you can rename it with the commands  
+`mv .env.sample .env` and `mv ~/ha-config/secrets.yaml.sample ~/ha-config/secrets.yaml.sample` 
+    
+*You will have to make sure to otherwise remove the suffix `.sample` from these filenames*
+- [x] Copy project folder
+- [x] modify `.env.sample` and `secrets.yaml.sample`
+- [ ] execute docker-compose  
+### `docker-compose`
+  When you're ready to build the stack change to the `cd ~/home-assistant`  
+`docker-compose up -d` (as root user?), if your regular user does not have permissions for docker then execute  
+`sudo usermod -aG docker [user_name]` (In Raspberry Pi OS, the default user is 'pi' so `sudo usermod -aG docker pi`)
 
-When you're ready to build the stack change to the `cd ~/home-assistant`
-`docker-compose up -d`, if your regular user does not have permissions for docker then execute
-`sudo usermod -aG docker [user_name]` (In Raspberry Pi OS, the default user is 'pi' so `sudo usermod -aG docker pi` 
-
+> Depending on the distro, [some of these applications may already be installed](https://iotechonline.com/home-assistant-install-with-docker-compose/?cn-reloaded=1#comment-346). To avoid conflicts, you will have to uninstall them first (e.g., `sudo apt-get remove mosquitto`)
+- [x] Copy project folder
+- [x] modify `.env.sample` and `secrets.yaml.sample`
+- [x] execute docker-compose  
+## All done!
+If you open a web browser on the pi (or other computer on the LAN) you should now (or shortly) be able to navigate into the Home Assistant webserver at 'http://<hostip>:8123’
+to finish setup.
+  
   ## FAQ's
 ### What's the point of this repo? <br/> Why don't I just follow [the guide at iotechonline.com](https://iotechonline.com/home-assistant-install-with-docker-compose/)?
   You can! I created this repo for a few reasons:

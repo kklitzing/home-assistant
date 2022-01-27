@@ -17,8 +17,11 @@ This consists of having to edit (or replace) just two files: [`.env`](.env.sampl
 
 You will have to make sure to remove the suffix `.sample` from these filenames as you follow [the guide](https://iotechonline.com/home-assistant-install-with-docker-compose/)
 
-  
-## FAQ's
+`cd ~/home-assistant`
+`docker-compose up -d` as root, if your regular user does not have permissions for docker then execute
+`sudo usermod -aG docker [user_name]` (In Raspberry Pi OS, the default user is 'pi' so `sudo usermod -aG docker pi` 
+
+  ## FAQ's
 ### What's the point of this repo? <br/> Why don't I just follow [the guide at iotechonline.com](https://iotechonline.com/home-assistant-install-with-docker-compose/)?
   You can! I created this repo for two reasons:
   * to make it easier for others to setup a Home Assistant, Nodered, MQTT, SQL server!

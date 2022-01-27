@@ -51,7 +51,7 @@ After editing the pertinent fields, using **Ctrl-O** will give you the option to
 If you open a web browser on the pi (or other computer on the LAN) you should now (or shortly) be able to navigate into the Home Assistant webserver at 'http://<hostip>:8123’
 to finish setup.
   
-  ## FAQ's
+## FAQ's
 ### What's the point of this repo? <br/> Why don't I just follow [the guide at iotechonline.com](https://iotechonline.com/home-assistant-install-with-docker-compose/)?
   You can! I created this repo for a few reasons:
   * to make it easier for others to setup a Home Assistant, Nodered, MQTT, SQL server!

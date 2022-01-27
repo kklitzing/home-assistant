@@ -53,6 +53,8 @@ If your regular user does not yet already have permissions for docker, then go a
 If you open a web browser on the pi (or other computer on the LAN) you should now (or shortly) be able to navigate into the Home Assistant webserver at 'http://<hostip>:8123’
 to finish setup.
   
+  
+  
 ## FAQ's
 ### What's the point of this repo? <br/> Why don't I just follow [the guide at iotechonline.com](https://iotechonline.com/home-assistant-install-with-docker-compose/)?
   You can! I created this repo for a few reasons:
@@ -60,10 +62,22 @@ to finish setup.
   * so that replicating my setup in the future will be that much easier.  The docker-compose setup scheme for Home Assistant from Jere's guide assumes that you have this skeleton created on your system.  Rather than recreate it from scratch in the future, I instead created it within a GitHub repository.
   * to learn (the best way for one to learn is to teach)
 ### Isn't it dangerous to publicly share your configuration?
-  Particularly with a public repository, you must make sure that no secrets are uploaded when the backing up the Home Assistant configuration to GitHub.  This would tantamount to posting one's passwords in a public forum.  To prevent this, I've added a `.gitignore` file to ensure that the sensitive production files (`.env` and `secrets.yaml`) **are _not_** uploaded to a git repository.  This means that you still need to find a safe place to backup your secrets file, even if in the future, like me, you decide to backup/share your Home Assistant configuration to GitHub.  
+  Particularly with a public repository, you must make sure that no secrets are uploaded when the backing up the Home Assistant configuration to GitHub.  This would tantamount to posting one's passwords in a public forum.  To prevent this, I've added a `.gitignore` file to ensure that the sensitive files used in production (`.env` and `secrets.yaml`) **are _not_** uploaded to a git repository.  This means that you still need to find a safe place to backup your secrets file, even if in the future, like me, you decide to backup/share your Home Assistant configuration to GitHub.  
 *  **When you back up your setup, make sure to securely back up your secrets and passwords as well!**
+  
+### I've already dabbled with HA in Docker, do I need to do anything?  
+  You will need to first [stop and remove all docker containers and images](blog.baudson.de/blog/stop-and-remove-all-docker-containers-and-images)
+
+  To stop all containers, you can execute the command:  
+`docker stop $(docker ps -aq)`  
+  Before removing the containers in the next step, I would advise you to **backup** the folder containing your existing Home Assistant config, if you intend to use it again.  When you're ready, type:  
+`docker rm $(docker ps -aq)`  
+>If your previous efforts with Docker are still plaguing you, there is a nuclear option: `docker system prune --all --volumes`  
+>Make sure your `/hass-config/` folder is backed up first, **everything** will be wiped from the docker volumes/directories.
+
+
 ### What are these `.keep` files?
 [`git` tracks content, not directories.](https://markmail.org/message/4eqjxx73opiswfis)  To adapt to this, I have included empty files `.keep` to the leaf nodes of the (otherwise) empty directories.  They can safely be ignored/deleted.
 
 ### How do you make sure you have write permissions?
-  Within the directory, type `ls –l [file_name]`
+  Within the directory, type `ls –l [file_name]` without the brackets

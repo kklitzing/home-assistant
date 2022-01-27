@@ -7,7 +7,7 @@ The beauty of setting up Home Assistant with `docker-compose` is that it simplif
 In this repository, I have layed out the barebones 'skeleton' for a docker-compose setup of Home Assistant.  
 To get started, navigate to the directory where you want to locate your Home Assistant folder and clone this repo with the command:  
 `git clone https://github.com/kklitzing/home-assistant`  
-As long as there isn't already a folder with this name, this will create the project in a folder called `/home-assistant/`
+As long as there isn't already a folder with this name, this will create the home for the project in a folder called `/home-assistant/`
 Next, we have to necessarily customize the setup to you and your installation specifics (things like <hostip>, uid and gid, passwords, etc.).
 This consists of having to edit (or replace) just two files: [`.env`](.env.sample) and [`secrets.yaml`](hass-config/secrets.yaml.sample)  
 

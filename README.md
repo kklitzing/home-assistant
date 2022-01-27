@@ -77,7 +77,7 @@ to finish setup.
 
 
 ### What are these `.keep` files?
-[`git` tracks content, not directories.](https://markmail.org/message/4eqjxx73opiswfis)  To adapt to this, I have included empty files `.keep` to the leaf nodes of the (otherwise) empty directories.  They can safely be ignored/deleted.
+[`git` tracks content, not directories.](https://markmail.org/message/4eqjxx73opiswfis)  To adapt to this, I have included empty files `.keep` to the leaf nodes of the (otherwise) empty directories.  They can safely be ignored or deleted.
 
 ### How does one ensure they have write permissions?
   Within a directory, type `ls –l [file_name]` (without the brackets)

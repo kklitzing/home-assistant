@@ -39,8 +39,8 @@ After editing the pertinent fields, using **Ctrl-O** will give you the option to
 - [x] modify `.env.sample` and `secrets.yaml.sample`
 - [ ] execute docker-compose  
 ### `docker-compose`
-  When you're ready to build the stack change to the `cd ~/home-assistant`  
-`docker-compose up -d` (Jere says to run the command as root user, but notes this installation shouldn't be exposed to the web).  
+  When you're ready to build the stack, navigate to the installation directory: `cd ~/home-assistant`  then
+`docker-compose up -d` ([Jere says to run the command as root user](https://iotechonline.com/home-assistant-install-with-docker-compose/), but notes this installation shouldn't be exposed to the web).  
 [The guide I followed for the installation of Docker](https://phoenixnap.com/kb/docker-on-raspberry-pi) suggests adding your user to the Docker group so that containers can be run without requiring root priveleges.  This is generally the best practice.  
 If your regular user does not yet already have permissions for docker, then go ahead and execute te following command: 
 `sudo usermod -aG docker [user_name]` (In Raspberry Pi OS, the default user is 'pi' so `sudo usermod -aG docker pi`)
@@ -70,7 +70,7 @@ to finish setup.
 
   To stop all containers, you can execute the command:  
 `docker stop $(docker ps -aq)`  
-  Before removing the containers in the next step, I would advise you to **backup** the folder containing your existing Home Assistant config, if you intend to use it again.  When you're ready, type:  
+  Before removing the containers in the next step, I would advise you to **backup** the folder containing your existing Home Assistant config, if you intend to use it again.  After you've backed up any save stores and you're ready for a clean slate, simply type  
 `docker rm $(docker ps -aq)`  
 >If your previous efforts with Docker are still plaguing you, there is a nuclear option: `docker system prune --all --volumes`  
 >Make sure your `/hass-config/` folder is backed up first, **everything** will be wiped from the docker volumes/directories.
@@ -79,5 +79,18 @@ to finish setup.
 ### What are these `.keep` files?
 [`git` tracks content, not directories.](https://markmail.org/message/4eqjxx73opiswfis)  To adapt to this, I have included empty files `.keep` to the leaf nodes of the (otherwise) empty directories.  They can safely be ignored/deleted.
 
-### How do you make sure you have write permissions?
-  Within the directory, type `ls –l [file_name]` without the brackets
+### How does one ensure they have write permissions?
+  Within a directory, type `ls –l [file_name]` (without the brackets)
+  
+
+### How are you doing backups?
+I've modelled my backup script after that which user mwav3 [posted to the Home Assistant community forum](https://community.home-assistant.io/t/what-backup-strategy-when-running-home-assistant-in-docker/262539/10):  
+
+I make use of rsync, first make sure the directories exist
+`mkdir ~/backups/hassrsync -p`  
+*give my user:defaultgroup full permissions to the hass-config folder*  
+  `sudo chown -R pi: ~/home-assistant-config`  
+(with hidden folders like `.store`, rsync seemed to have permission issues without first recursively changing ownership of the directory and files within)  The actual backup script looks much like below:
+  ```
+  rsync -ab --backup-dir=old_`date +%F` --delete --exclude=old_* /home/pi/home-assistant-config ~/backups/hassrsync
+```

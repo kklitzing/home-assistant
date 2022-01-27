@@ -2,7 +2,11 @@
 
 My Home Assistant installation is modelled after this [very clear guide](https://iotechonline.com/home-assistant-install-with-docker-compose/) from Jere's website iotechonline.com.  
 The beauty of setting up Home Assistant with `docker-compose` is that it simplifies the installing, troubleshooting, and sharing of your setup because the bulk of the details are already baked in to `docker-compose.yaml` which builds the server environment.  Rather than having to remember or document a slew of `apt-get` and multiple manual file changes, by using `docker-compose`, you store much of the installation procedures and configuration as code.
-
+The reddit user luna87 [put it well](https://www.reddit.com/r/homeassistant/comments/c3p3ek/comment/ersd9kv/?utm_source=share&utm_medium=web2x&context=3):
+>I would also recommend using docker-compose and git for version control... ...you can easily define your entire container stack as a single service and bring everything up / down / restart together with docker compose.
+>
+>You can then use Git to version control all of it. If I ever needed to move my home assistant install, all I would need to do is install docker, docker compose and git. Git clone my Git repository and docker-compose start. <br/>  
+# &nbsp; &nbsp; :ok_hand:
 ## How to use it
 In this repository, I have layed out the barebones 'skeleton' for a docker-compose setup of Home Assistant.  
 To get started, navigate to the directory where you want to locate your Home Assistant folder and clone this repo with the command:  

@@ -20,7 +20,7 @@ To get started, navigate to where you want to locate your Home Assistant folder.
 
 Then, bring this repo folder and it's contents to your computer:  
 `git clone https://github.com/kklitzing/home-assistant`  
-As long as there isn't already a folder with this name, you will now see the root folder for the project `/home-assistant/` within the working directory.  
+If you don't have git installed, fret not.  On this page, simply click on the green box that says Code and select `Download ZIP`.  Extract the ZIP archive into the desired directory.
 
 - [x] Copy project folder
 - [ ] modify `.env.sample` and `secrets.yaml.sample`
@@ -59,6 +59,9 @@ to start onboarding.
   
   
 ## FAQ's
+
+### What is git? GitHub?
+  Git is a command-line tool, used by programmers to share/submit their code changes to a version controlled repository, so that when a bug crops up, or a software team decides to tackle a problem via a different route, the 5 W's (who, what, when, where, and why) that surround the code base are readily observable, because each change has been documented.  Github, as the name evokes, sprung up around that, and besides providing a easy, web-accessible UI, it aids collaborative development build by serving as ahas many tools and integrations useful for testing and building software.  With all these various tools, it turns out that GitHub can be useful for than just code, it's a platform used for [curated lists](https://github.com/folkswhocode/awesome-diversity), demos of [code snippets](https://gist.github.com/jbsulli/03df3cdce94ee97937ebda0ffef28287), sharing Animal Crossing: New Horizonds infographics, and even [hosting websites](www.kyleklitzing.com).
 ### What's the point of this repo? <br/> Why don't I just follow [the guide at iotechonline.com](https://iotechonline.com/home-assistant-install-with-docker-compose/)?
   You can! I created this repo for a few reasons:
   * to make it easier for others to setup a Home Assistant, Nodered, MQTT, SQL server!

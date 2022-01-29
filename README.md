@@ -43,8 +43,8 @@ After editing the pertinent fields, using **Ctrl-O** will give you the option to
   When you're ready to build the stack, navigate to the installation directory: `cd ~/home-assistant`  then
 `docker-compose up -d` ([Jere says to run the command as root user](https://iotechonline.com/home-assistant-install-with-docker-compose/), but notes this installation shouldn't be exposed to the web).  
 [The guide I followed for the installation of Docker](https://phoenixnap.com/kb/docker-on-raspberry-pi) suggests adding your user to the Docker group so that containers can be run without requiring root priveleges.  This is generally the best practice.  
-If your regular user does not yet already have permissions for docker, then go ahead and execute te following command: 
-`sudo usermod -aG docker [user_name]` (In Raspberry Pi OS, the default user is 'pi' so `sudo usermod -aG docker pi`)
+If your regular user does not yet already have permissions for docker, then go ahead and enter the command:  
+`sudo usermod -aG docker [user_name]` (In Raspberry Pi OS, the default user is 'pi' so `sudo usermod -aG docker pi`)  
   
   *\*You must restart the user session (i.e., log out and back in) for this change to take effect.*
 
@@ -83,7 +83,7 @@ to start onboarding.
 
 
 ### What are these `.keep` files?
-[`git` tracks content, not directories.](https://markmail.org/message/4eqjxx73opiswfis)  To adapt to this, I have included empty files `.keep` to the leaf nodes of the (otherwise) empty directories.  They can safely be ignored or deleted.
+Because [`git` tracks content, not directories.](https://markmail.org/message/4eqjxx73opiswfis), I have included empty files named `.keep` to the leaf nodes of the (otherwise) empty directories, so that the structure is preserved within the git repository.  Contrary to the name, they don't have to be kept, and can safely be either ignored or deleted.
 
 ### How does one ensure they have write permissions?
   Within a directory, type `ls –l [file_name]` (without the brackets)

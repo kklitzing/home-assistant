@@ -37,7 +37,7 @@ services:
       - homeassistant
       - mosquitto
     environment:
-      TZ: "Europe/Madrid"
+      - TZ=America/Chicago
     restart: unless-stopped
   mosquitto:
     image: eclipse-mosquitto
@@ -51,7 +51,7 @@ services:
       - "./mosquitto/data:/mosquitto/data"
       - "./mosquitto/log:/mosquitto/log"
     environment:
-      - TZ=Europe/Madrid
+      - TZ=America/Chicago
     user: "${PUID}:${PGID}"
   hass-configurator:
     image: "causticlab/hass-configurator-docker:arm"
@@ -65,6 +65,25 @@ services:
       - "./configurator-config:/config"
       - "./hass-config:/hass-config"
     user: "${PUID}:${PGID}"
+  zigbee2mqtt:
+    container_name: zigbee2mqtt
+    image: koenkk/zigbee2mqtt
+    restart: unless-stopped
+    volumes:
+      - ./zigbee2mqtt-data:/app/data
+      - /run/udev:/run/udev:ro
+    ports:
+      # Frontend port
+      - 8080:8080
+    environment:
+      - TZ=America/Chicago
+    devices:
+      # Make sure this matched your adapter location
+      - /dev/ttyUSB0:/dev/ttyACM0
+    group_add:
+      - dialout
+    user: "${PUID}:${PGID}"
+
 #  portainer:
 #    ports:
 #      - "9000:9000"

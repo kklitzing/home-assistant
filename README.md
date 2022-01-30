@@ -25,28 +25,53 @@ If you don't have git installed, fret not.  On this page, simply click on the gr
 - [x] Copy project folder
 - [ ] modify `.env.sample` and `secrets.yaml.sample`
 - [ ] execute docker-compose  
-### Modify environmental variables  
-Next, we have to necessarily customize the setup to you and your installation specifics (things like <hostip>, uid and gid, passwords, etc.).
-This consists of having to edit (or replace) just two files: [`.env`](.env.sample) and [`secrets.yaml`](hass-config/secrets.yaml.sample)  
 
-  I opened the two files using the text editor `nano`:  
-`nano .env.sample` and `nano hass-config/secrets.yaml`  
-After editing the pertinent fields, using **Ctrl-O** will give you the option to save with a different filename.  Save without the suffix `.sample`
->If you happened to save and close the files without renaming, you can rename it with the commands  
-`mv .env.sample .env` and `mv ~/ha-config/secrets.yaml.sample ~/ha-config/secrets.yaml.sample` 
+
+
+### Modify environmental variables  
+If this is your first time with HA, you have to edit (or replace) just two files: [`.env`](.env.sample) and [`secrets.yaml`](hass-config/secrets.yaml.sample)  
+If you are restoring your existing HA setup, then additionally make sure to combine the lines from this repo's [`configuration.yaml`](hass-config/configuration.yaml) and `secrets.yaml` when restoring your own.  
+- The `.env` file holds variables that the `docker-compose` command will refer to when it builds the containers.  
+  First open the `.env` file within the base directory with your choice of text editor and change the passwords to something unique:
+  The default PUID and PGID should suitable, but 
+  ```
+  MYSQL_ROOT_PASSWORD=mariadbrootpassword
+  HA_MYSQL_PASSWORD=ha_dbdatabasepassword
+  ```
+  Change the root (mariadbrootpassword) and HA_sql passwordssword"mariadbrootpassword"
+  ```
+  PUID=1000
+  PGID=1000
+  ```
+  
+- The [`secrets.yaml`](/hass-config/secrets.yaml.sample) file is used by Home Assistant looks in the `secrets.yaml` whenever it sees a `!secret` reference in the configuration.yaml file that you don't want to hold in `configuration.yaml`.
+  by Home Assistant to store secrets needed for setup/interaction with the other software containers.
+  These values could just be kept within the configuration.yaml file, because you can then safely share your config file with others while troubleshooting.
+  ```
+  hostip: "<hostip>" # substitute your pi's LAN IP address  e.g., hostip: 192.168.0.31 
+  configurator_url: "http://<hostip>:3218/" 
+  nodered_url: "http://<hostip>:1880/"
+  
+  ha_db_url: "mysql://homeassistant:<ha_dbdatabasepassword>@<hostip>/ha_db?charset=utf8"
+  ```
+  `<hostip>`: Is your hosts IP address on the network.
     
-*You will have to make sure to otherwise remove the suffix `.sample` from these filenames*
+  *You will have to make sure to otherwise remove the suffix `.sample` from these filenames*
 - [x] Copy project folder
 - [x] modify `.env.sample` and `secrets.yaml.sample`
 - [ ] execute docker-compose  
+  
 ### `docker-compose`
-  When you're ready to build the stack, navigate to the installation directory: `cd ~/home-assistant`  then
-`docker-compose up -d` ([Jere says to run the command as root user](https://iotechonline.com/home-assistant-install-with-docker-compose/), but notes this installation shouldn't be exposed to the web).  
-[The guide I followed for the installation of Docker](https://phoenixnap.com/kb/docker-on-raspberry-pi) suggests adding your user to the Docker group so that containers can be run without requiring root priveleges.  This is generally the best practice.  
+[The guide I followed for the installation of Docker](https://phoenixnap.com/kb/docker-on-raspberry-pi) suggests adding Your user to the Docker group so that containers can be run without requiring root priveleges, which is generally considered [best practice](https://en.wikipedia.org/wiki/Principle_of_least_privilege).
+  
 If your regular user does not yet already have permissions for docker, then go ahead and enter the command:  
 `sudo usermod -aG docker [user_name]` (In Raspberry Pi OS, the default user is 'pi' so `sudo usermod -aG docker pi`)  
   
   *\*You must restart the user session (i.e., log out and back in) for this change to take effect.*
+
+ When you're ready to build your containers, navigate to the installation directory: `cd ~/home-assistant`
+  then:  
+`docker-compose up -d`
 
 > Depending on your Linux distribution, [some of these applications may already be installed on the host system](https://iotechonline.com/home-assistant-install-with-docker-compose/?cn-reloaded=1#comment-346). To avoid conflicts, you will have to uninstall them first (e.g., `sudo apt-get remove mosquitto`)
 - [x] Copy project folder
@@ -87,20 +112,28 @@ Because [`git` tracks content, not directories.](https://markmail.org/message/4e
 
 ### How does one ensure they have write permissions?
   Within a directory, type `ls –l [file_name]` (without the brackets)
-  
 
-### How are you doing backups?
+### How do you edit the `.env` and `.yaml` files?
+  I opened the two files using the text editor `nano`:  
+  `nano .env.sample` and `nano hass-config/secrets.yaml`  
+  After editing the pertinent fields, using **Ctrl-O** will give you the option to save with a different filename.  Save and exit without the suffix `.sample`
+  
+  >If you happened to save and close the files without renaming, you can rename them with the command `mv`, i.e.:  
+  `mv .env.sample .env` and `mv ~/ha-config/secrets.yaml.sample ~/ha-config/secrets.yaml.sample` 
+
+### What's a good way of doing backups?
 I've modelled my backup script after that which user mwav3 [posted to the Home Assistant community forum](https://community.home-assistant.io/t/what-backup-strategy-when-running-home-assistant-in-docker/262539/10):  
 
->If you run the container or core installation methods, you will need to manually make a backup of your configuration folder. Be aware that some of the files you need start with ., which is hidden by default from both ls (in SSH), in Windows Explorer, and macOS Finder. You’ll need to ensure that you’re viewing all files before you copy them.
-https://www.home-assistant.io/docs/configuration/
+Many of these important files start with `.` and are often hidden by default in Windows, macOS, and Linux.  When you backup the folders, make sure that you are viewing all files before selection and copying.
 
-  
-I make use of rsync, first make sure the directories exist
+I make use of rsync, I first make sure the directories exist
 `mkdir ~/backups/hassrsync -p`  
-*give my user:defaultgroup full permissions to the hass-config folder*  
-  `sudo chown -R pi: ~/home-assistant-config`  
-(with hidden folders like `.store`, rsync seemed to have permission issues without first recursively changing ownership of the directory and files within)  The actual backup script looks much like below:
+and make sure that my user:defaultgroup has full permissions to the hass-config folder
+(rsync had issues with hidden folders like `.store`, sync seemed to have permission issues without first recursively changing ownership of the directory and files within)  
+    `sudo chown -R pi: home/pi/<directory-being-backed-up>`  
+
+  The actual backup routine looks much like below:
   ```
-  rsync -ab --backup-dir=old_`date +%F` --delete --exclude=old_* /home/pi/home-assistant-config ~/backups/hassrsync
-```
+  sudo chown -R pi: ~/home-assistant
+  rsync -ab --backup-dir=old_`date +%F` --delete --exclude=old_* /home/pi/home-assistant /media/pi/thumbdrive-backup/hassrsync
+  ```

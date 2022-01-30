@@ -75,6 +75,8 @@ services:
     ports:
       # Frontend port
       - 8080:8080
+    depends_on:
+      - mosquitto
     environment:
       - TZ=America/Chicago
     devices:

@@ -9,6 +9,18 @@ The reddit user luna87 [put it well](https://www.reddit.com/r/homeassistant/comm
 >
 >You can then use Git to version control all of it. If I ever needed to move my home assistant install, all I would need to do is install docker, docker compose and git. Git clone my Git repository and docker-compose start. <br/>  
 # &nbsp; &nbsp; :ok_hand:
+# Pre-requisites
+[Excellent, concise guide for Raspberry Pi `docker` and `docker-compose`](https://jfrog.com/connect/post/install-docker-compose-on-raspberry-pi/)
+* [install docker](https://docs.docker.com/engine/install/)
+  `curl -fsSL https://get.docker.com -o get-docker.sh`
+  `sudo sh get-docker.sh`: execute the install script with root priviledges
+  `sudo usermod -aG docker ${USER}`: add your user to the group Docker
+  `groups ${USER}`: Check that your user was successfully added
+* [Install `docker-compose`](https://docs.docker.com/compose/install/):
+  `sudo apt install docker-compose`
+  
+
+
 ## How to use it <br/>  Three steps
 - [ ] Copy project folder
 - [ ] modify `.env.sample` and `secrets.yaml.sample`

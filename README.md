@@ -98,7 +98,14 @@ If not, then go ahead and enter the command:
  When you're ready to build your containers, navigate to the installation directory: `cd ~/home-assistant`
   then:  
 `docker-compose up -d`
+```# Stop services only
+docker-compose stop
 
+# Stop and remove containers, networks..
+docker-compose down
+
+docker-compose up --build 
+```
 > Depending on your Linux distribution, [some of these applications may already be installed on the host system](https://iotechonline.com/home-assistant-install-with-docker-compose/?cn-reloaded=1#comment-346). To avoid conflicts, you will have to uninstall them first (e.g., `sudo apt-get remove mosquitto`)
 - [x] Copy project folder
 - [x] modify `.env.sample` and `secrets.yaml.sample`

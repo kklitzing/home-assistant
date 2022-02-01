@@ -84,10 +84,14 @@ If you are restoring your existing HA setup, then additionally make sure to comb
   
   
 ### `docker-compose`
-[The guide I followed for the installation of Docker](https://phoenixnap.com/kb/docker-on-raspberry-pi) suggests adding Your user to the Docker group so that containers can be run without requiring root priveleges, which is generally considered [best practice](https://en.wikipedia.org/wiki/Principle_of_least_privilege).
-  
-If your regular user does not yet already have permissions for docker, then go ahead and enter the command:  
-`sudo usermod -aG docker [user_name]` (In Raspberry Pi OS, the default user is 'pi' so `sudo usermod -aG docker pi`)  
+`sudo apt-get install docker`  
+`sudo apt-get install docker-compose`  
+
+[The guide I followed for the installation of Docker](https://phoenixnap.com/kb/docker-on-raspberry-pi) suggests adding Your user to the Docker group so that containers can be run without requiring root priveleges, which is generally considered [best practice](https://en.wikipedia.org/wiki/Principle_of_least_privilege).  
+Verify regular user has permissions for docker:  
+`groups ${USER}`  
+If not, then go ahead and enter the command:  
+`sudo usermod -aG docker pi`  (syntax: `sudo usermod -aG docker [user_name]`, in Raspberry Pi OS, the default user is 'pi')  
   
   *\*You must restart the user session (i.e., log out and back in) for this change to take effect.*
 

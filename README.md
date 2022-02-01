@@ -43,9 +43,12 @@ If you don't have git installed, fret not.  On this page, simply click on the gr
 ### Modify environmental variables  
 If this is your first time with HA, you have to edit (or replace) just two files: [`.env`](.env.sample) and [`secrets.yaml`](hass-config/secrets.yaml.sample)  
 If you are restoring your existing HA setup, then additionally make sure to combine the lines from this repo's [`configuration.yaml`](hass-config/configuration.yaml) and `secrets.yaml` when restoring your own.  
+
 - The `.env` file holds variables that the `docker-compose` command will refer to when it builds the containers.  
-  First open the `.env` file within the base directory with your choice of text editor and change the passwords to something unique:
-  The default PUID and PGID should suitable, but 
+  First open the `.env` file within the base directory with your choice of text editor
+  `cd home-assistant`
+  `nano .env.sample`
+  The default PUID and PGID should suitable, but change the passwords to something unique:
   ```
   MYSQL_ROOT_PASSWORD=mariadbrootpassword
   HA_MYSQL_PASSWORD=ha_dbdatabasepassword
@@ -55,10 +58,17 @@ If you are restoring your existing HA setup, then additionally make sure to comb
   PUID=1000
   PGID=1000
   ```
+   
+  After editing the pertinent fields, using **Ctrl-O** will give you the option to save with a different filename.  Save and exit without the suffix `.sample`
+  
+  >If you happened to save and close the files without renaming, you can rename them with the command `mv`, i.e.:  
+  `mv .env.sample .env` and `mv ~/ha-config/secrets.yaml.sample ~/ha-config/secrets.yaml.sample`  
   
 - The [`secrets.yaml`](/hass-config/secrets.yaml.sample) file is used by Home Assistant looks in the `secrets.yaml` whenever it sees a `!secret` reference in the configuration.yaml file that you don't want to hold in `configuration.yaml`.
   by Home Assistant to store secrets needed for setup/interaction with the other software containers.
   These values could just be kept within the configuration.yaml file, because you can then safely share your config file with others while troubleshooting.
+  `nano hass-config/secrets.yaml`  
+
   ```
   hostip: "<hostip>" # substitute your pi's LAN IP address  e.g., hostip: 192.168.0.31 
   configurator_url: "http://<hostip>:3218/" 
@@ -125,13 +135,7 @@ Because [`git` tracks content, not directories.](https://markmail.org/message/4e
 ### How does one ensure they have write permissions?
   Within a directory, type `ls –l [file_name]` (without the brackets)
 
-### How do you edit the `.env` and `.yaml` files?
-  I opened the two files using the text editor `nano`:  
-  `nano .env.sample` and `nano hass-config/secrets.yaml`  
-  After editing the pertinent fields, using **Ctrl-O** will give you the option to save with a different filename.  Save and exit without the suffix `.sample`
-  
-  >If you happened to save and close the files without renaming, you can rename them with the command `mv`, i.e.:  
-  `mv .env.sample .env` and `mv ~/ha-config/secrets.yaml.sample ~/ha-config/secrets.yaml.sample` 
+
 
 ### What's a good way of doing backups?
 I've modelled my backup script after that which user mwav3 [posted to the Home Assistant community forum](https://community.home-assistant.io/t/what-backup-strategy-when-running-home-assistant-in-docker/262539/10):  

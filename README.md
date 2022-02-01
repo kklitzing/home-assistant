@@ -84,6 +84,8 @@ If you are restoring your existing HA setup, then additionally make sure to comb
   
   
 ### `docker-compose`
+Make sure everything is up-to-date:
+`sudo apt-get update && sudo apt-get upgrade`  
 `sudo apt-get install docker`  
 `sudo apt-get install docker-compose`  
 

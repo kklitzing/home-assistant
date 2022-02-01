@@ -48,18 +48,16 @@ If you are restoring your existing HA setup, then additionally make sure to comb
   First open the `.env` file within the base directory with your choice of text editor
   `cd home-assistant`
   `nano .env.sample`
-  The default PUID and PGID should suitable, but change the passwords to something unique:
+  
   ```
   MYSQL_ROOT_PASSWORD=mariadbrootpassword
   HA_MYSQL_PASSWORD=ha_dbdatabasepassword
-  ```
-  Change the root (mariadbrootpassword) and HA_sql passwordssword"mariadbrootpassword"
-  ```
   PUID=1000
   PGID=1000
   ```
+  The default PUID and PGID should suitable, but change the passwords to something unique:
    
-  After editing the pertinent fields, using **Ctrl-O** will give you the option to save with a different filename.  Save and exit without the suffix `.sample`
+  After editing, using **Ctrl-O** will give you the option to save with a different filename.  Save without the suffix `.sample` and exit.
   
   >If you happened to save and close the files without renaming, you can rename them with the command `mv`, i.e.:  
   `mv .env.sample .env` and `mv ~/ha-config/secrets.yaml.sample ~/ha-config/secrets.yaml.sample`  

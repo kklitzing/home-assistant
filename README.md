@@ -64,8 +64,8 @@ If you are restoring your existing HA setup, then additionally make sure to comb
   
 - The [`secrets.yaml`](/hass-config/secrets.yaml.sample) file is used by Home Assistant looks in the `secrets.yaml` whenever it sees a `!secret` reference in the configuration.yaml file that you don't want to hold in `configuration.yaml`.
   by Home Assistant to store secrets needed for setup/interaction with the other software containers.
-  These values could just be kept within the configuration.yaml file, because you can then safely share your config file with others while troubleshooting.
-  `nano hass-config/secrets.yaml`  
+  These values could just be kept within the configuration.yaml file, because you can then safely share your config file with others while troubleshooting.  
+  `nano hass-config/secrets.yaml.sample`  
 
   ```
   hostip: "<hostip>" # substitute your pi's LAN IP address  e.g., hostip: 192.168.0.31 
@@ -74,12 +74,14 @@ If you are restoring your existing HA setup, then additionally make sure to comb
   
   ha_db_url: "mysql://homeassistant:<ha_dbdatabasepassword>@<hostip>/ha_db?charset=utf8"
   ```
-  `<hostip>`: Is your hosts IP address on the network.
+  `<hostip>`: Is your hosts IP address on the network, replace it and <ha_dbdatabasepassword> with the value from your `.env` and exit after saving without the `.sample` suffix.
     
-  *You will have to make sure to otherwise remove the suffix `.sample` from these filenames*
+  *You will have to make sure to otherwise remove the suffix `.sample` from these filenames*  
+  
 - [x] Copy project folder
 - [x] modify `.env.sample` and `secrets.yaml.sample`
 - [ ] execute docker-compose  
+  
   
 ### `docker-compose`
 [The guide I followed for the installation of Docker](https://phoenixnap.com/kb/docker-on-raspberry-pi) suggests adding Your user to the Docker group so that containers can be run without requiring root priveleges, which is generally considered [best practice](https://en.wikipedia.org/wiki/Principle_of_least_privilege).

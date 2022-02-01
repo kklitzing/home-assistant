@@ -65,33 +65,33 @@ services:
       - "./configurator-config:/config"
       - "./hass-config:/hass-config"
     user: "${PUID}:${PGID}"
-  zigbee2mqtt:
-    container_name: zigbee2mqtt
-    image: koenkk/zigbee2mqtt
-    restart: unless-stopped
-    volumes:
-      - ./zigbee2mqtt-data:/app/data
-      - /run/udev:/run/udev:ro
-    ports:
-      # Frontend port
-      - 8080:8080
-    depends_on:
-      - mosquitto
-    environment:
-      - TZ=America/Chicago
-    devices:
-      # Make sure this matches your adapter location
-      - /dev/serial/by-id/usb-ITead_Sonoff_Zigbee_3.0_USB_Dongle_Plus_7492f44053c9eb11b8008d4f1d69213e-if00-port0:/dev/ttyACM0
-    group_add:
-      - dialout
-    user: "${PUID}:${PGID}"
-
-#  portainer:
-#    ports:
-#      - "9000:9000"
-#    container_name: portainer
+#  zigbee2mqtt:
+#    container_name: zigbee2mqtt
+#    image: koenkk/zigbee2mqtt
 #    restart: unless-stopped
 #    volumes:
-#      - "/var/run/docker.sock:/var/run/docker.sock"
-#      - "./portainer/portainer_data:/data"
-#    image: portainer/portainer-ce
+#      - ./zigbee2mqtt-data:/app/data
+#      - /run/udev:/run/udev:ro
+#    ports:
+#      # Frontend port
+#      - 8080:8080
+#    depends_on:
+#      - mosquitto
+#    environment:
+#      - TZ=America/Chicago
+#    devices:
+#      # Make sure this matches your adapter location
+#      - /dev/serial/by-id/usb-ITead_Sonoff_Zigbee_3.0_USB_Dongle_Plus_7492f44053c9eb11b8008d4f1d69213e-if00-port0:/dev/ttyACM0
+#    group_add:
+#      - dialout
+#    user: "${PUID}:${PGID}"
+
+  portainer:
+    ports:
+      - "9000:9000"
+    container_name: portainer
+    restart: unless-stopped
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "./portainer/portainer_data:/data"
+    image: portainer/portainer-ce

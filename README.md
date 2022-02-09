@@ -2,39 +2,29 @@
 In this repository, I have layed out the barebones 'skeleton' for a docker-compose setup of Home Assistant. My Home Assistant installation is modelled after this [very clear guide](https://iotechonline.com/home-assistant-install-with-docker-compose/) from Jere's website iotechonline.com.  
 This guide will get you all the way to the Home Assistant onboarding script.  
 
-The beauty of setting up Home Assistant with `docker-compose` is that it simplifies the installing, troubleshooting, and sharing of your setup because the bulk of the details are already baked in to `docker-compose.yaml` which builds the server environment.  Rather than having to remember or document a slew of `apt-get` commands and multiple manual file changes, by using `docker-compose`, you store much of the installation procedures and configuration as code.
-
-The reddit user luna87 [put it well](https://www.reddit.com/r/homeassistant/comments/c3p3ek/comment/ersd9kv/?utm_source=share&utm_medium=web2x&context=3):
->I would also recommend using docker-compose and git for version control... ...you can easily define your entire container stack as a single service and bring everything up / down / restart together with docker compose.
->
->You can then use Git to version control all of it. If I ever needed to move my home assistant install, all I would need to do is install docker, docker compose and git. Git clone my Git repository and docker-compose start. <br/>  
-# &nbsp; &nbsp; :ok_hand:
 ## Pre-requisites
-Make sure everything is up-to-date:
-`sudo apt-get update && sudo apt-get upgrade`
-* [Install Docker according to the docs](https://docs.docker.com/engine/install/debian/#install-using-the-convenience-script).  Curl
+- ### Make sure everything is up-to-date:
+  `sudo apt-get update && sudo apt-get upgrade`
+- ### [Install Docker according to the docs](https://docs.docker.com/engine/install/debian/#install-using-the-convenience-script).  
   `curl -fsSL https://get.docker.com -o get-docker.sh`
   `sudo sh get-docker.sh`: execute the install script with root priviledges
-  
-  
-It is best practice to add your user to the Docker group so that containers can be run without requiring root priveleges.
-Verify regular user has permissions for docker:  
-`groups ${USER}`  
-If not, then go ahead and add your user to the group Docker (and verify that it was successful):
-`sudo usermod -aG docker pi && groups ${USER}`  
-(syntax: `sudo usermod -aG docker [user_name]`, in Raspberry Pi OS, the default user is 'pi')  
+    
+  It is best practice to add your user to the Docker group so that containers can be run without requiring root priveleges.  
+  Verify that the regular user has permissions for docker with the command: `groups ${USER}`  
+  If not, then go ahead and add your user to the group Docker (and verify that it was successful):  
+  `sudo usermod -aG docker pi && groups ${USER}`  
+  (syntax: `sudo usermod -aG docker [user_name]`, in Raspberry Pi OS, the default user is 'pi')  
   
   *\*You must restart the user session (i.e., log out and back in) for this change to take effect.*
-
-## Docker compose:
-The latest versions of Docker Desktop actually have compose v2 built in to the command line interface (CLI).
-Docker Desktop for Linux is still in development, but we can add access to compose v2 through docker engine using the convenience script offered by the Docker team:
-Since this is being installed on a Raspberry Pi 4, we must substitute the url for the [latest build](https://github.com/docker/compose/releases) on 64-bit ARM architecture in place of x86-64, and execute the following command:
-`mkdir -p ~/.docker/cli-plugins/`  
-`curl -SL https://github.com/docker/compose/releases/download/v2.2.3/docker-compose-linux-aarch64 -o ~/.docker/cli-plugins/docker-compose`  
-`chmod +x ~/.docker/cli-plugins/docker-compose`: change the permissions on the binary to executable.
-`docker compose version`: Check that everything is installed.
-
+- ### Docker compose:
+  The latest versions of Docker Desktop actually have compose v2 built in to the command line interface (CLI).
+  Docker Desktop for Linux is still in development, but we can add access to Compose v2 through the Linux Docker Engine CLI [using the instructions & convenience script offered by the Docker team](https://docs.docker.com/compose/cli-command/#install-on-linux):  
+  Since this is being installed on a Raspberry Pi 4, we must substitute the url for the [latest build](https://github.com/docker/compose/releases) on 64-bit ARM architecture in place of x86-64, and execute the following command:  
+  `mkdir -p ~/.docker/cli-plugins/`  
+  `curl -SL https://github.com/docker/compose/releases/download/v2.2.3/docker-compose-linux-aarch64 -o ~/.docker/cli-plugins/docker-compose`  
+  `chmod +x ~/.docker/cli-plugins/docker-compose`: change the permissions on the binary to executable.  
+  `docker compose version`: Check that everything is installed.  
+  > If you are running 32-bit Raspberry Pi OS (or other linux distribution), make sure to substitute the URL appropriately!  
 ## How to use it <br/>  Three steps
 - [ ] Copy project folder
 - [ ] modify `.env.sample` and `secrets.yaml.sample`
@@ -69,15 +59,18 @@ If you are restoring your existing HA setup, then additionally make sure to comb
   PUID=1000
   PGID=1000
   ```
-  The default PUID and PGID (the User and Group ID under which Docker will run the Processes) should suitable on a Raspberry Pi, [if not](url)  
+  The variables `PUID` and `PGID` are the User ID and Group ID under which Docker will run these Processes).  
+  The defaults should be suitable on a Raspberry Pi, but if not, check the UID/GID for your user with the command `id`  
   Be sure to change the passwords to something unique:
    
   After editing, using **Ctrl-O** will give you the option to save with a different filename.  Save without the suffix `.sample` and exit.
     
   
-- The [`secrets.yaml`](/hass-config/secrets.yaml.sample) file is used by Home Assistant looks in the `secrets.yaml` whenever it sees a `!secret` reference in the configuration.yaml file that you don't want to hold in `configuration.yaml`.
-  by Home Assistant to store secrets needed for setup/interaction with the other software containers.
-  These values could just be kept within the configuration.yaml file, because you can then safely share your config file with others while troubleshooting.  
+- The [`secrets.yaml`](/hass-config/secrets.yaml.sample) file is where Home Assistant will look whenever it sees a `!secret` reference its configuration.yaml file. 
+  These secrets are are generally things like service/server passwords, but can also be non-sensitive things like ip addresses that you'd just prefer to leave out of the config file, but are still needed for setup/interaction with the other software containers.  
+  By doing this, we'll get a jump-start on following best practices and at the same time make it easy to safely share your config or troubleshoot your file with others without having to redact your passwords each time.  
+    
+  Open `secrets.yaml.sample` with nano or other text editor:
   `nano hass-config/secrets.yaml.sample`  
 
   ```
@@ -138,7 +131,15 @@ https://www.zigbee2mqtt.io/guide/usage/integrations/home_assistant.html#mqtt-dis
   * to make it easier for others to setup a Home Assistant, Nodered, MQTT, SQL server!
   * so that replicating my setup in the future will be that much easier.  The docker-compose setup scheme for Home Assistant from Jere's guide assumes that you have this skeleton created on your system.  Rather than recreate it from scratch in the future, I instead created it within a GitHub repository.
   * to learn (the best way for one to learn is to teach)  
-  
+### Why bother using Docker and Compose?
+  The beauty of setting up Home Assistant with Docker Compose is that it simplifies the installing, troubleshooting, and sharing of your setup because the bulk of the details are already baked in to `docker-compose.yaml` which builds the server environment.  Rather than having to remember or document a slew of `apt-get` commands and multiple manual file changes, by using Compose, you store much of the installation procedures and configuration as code.
+
+The reddit user luna87 [put it well](https://www.reddit.com/r/homeassistant/comments/c3p3ek/comment/ersd9kv/?utm_source=share&utm_medium=web2x&context=3):
+>I would also recommend using docker-compose and git for version control... ...you can easily define your entire container stack as a single service and bring everything up / down / restart together with docker compose.
+>
+>You can then use Git to version control all of it. If I ever needed to move my home assistant install, all I would need to do is install docker, docker compose and git. Git clone my Git repository and docker-compose start. <br/>  
+# &nbsp; &nbsp; :ok_hand:
+
 ### Isn't it dangerous to publicly share your configuration?
   Particularly with a public repository, you must make sure that no secrets are uploaded when the backing up the Home Assistant configuration to GitHub.  This would tantamount to posting one's passwords in a public forum.  To prevent this, I've added a `.gitignore` file to ensure that the sensitive files used in production (`.env` and `secrets.yaml`) **are _not_** uploaded to a git repository.  This means that you still need to find a safe place to backup your secrets file, even if in the future, like me, you decide to backup/share your Home Assistant configuration to GitHub.  
 *  **When you back up your setup, make sure to securely back up your secrets and passwords as well!**

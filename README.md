@@ -19,11 +19,12 @@ This guide will get you all the way to the Home Assistant onboarding script.
 - ### Docker compose:
   The latest versions of Docker Desktop actually have compose v2 built in to the command line interface (CLI).
   Docker Desktop for Linux is still in development, but we can add access to Compose v2 through the Linux Docker Engine CLI [using the instructions & convenience script offered by the Docker team](https://docs.docker.com/compose/cli-command/#install-on-linux):  
-  Since this is being installed on a Raspberry Pi 4, we must substitute the url for the [latest build](https://github.com/docker/compose/releases) on 64-bit ARM architecture in place of x86-64, and execute the following command:  
+  Since this is being installed on a Raspberry Pi 4, we must substitute the url for the [latest build](https://github.com/docker/compose/releases) on 64-bit ARM architecture in place of x86-64, and execute the following commands:  
   `mkdir -p ~/.docker/cli-plugins/`  
   `curl -SL https://github.com/docker/compose/releases/download/v2.2.3/docker-compose-linux-aarch64 -o ~/.docker/cli-plugins/docker-compose`  
   `chmod +x ~/.docker/cli-plugins/docker-compose`: change the permissions on the binary to executable.  
   `docker compose version`: Check that everything is installed.  
+    
   > If you are running 32-bit Raspberry Pi OS (or other linux distribution), make sure to substitute the URL appropriately!  
 ## How to use it <br/>  Three steps
 - [ ] Copy project folder

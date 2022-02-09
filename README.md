@@ -9,17 +9,31 @@ The reddit user luna87 [put it well](https://www.reddit.com/r/homeassistant/comm
 >
 >You can then use Git to version control all of it. If I ever needed to move my home assistant install, all I would need to do is install docker, docker compose and git. Git clone my Git repository and docker-compose start. <br/>  
 # &nbsp; &nbsp; :ok_hand:
-# Pre-requisites
-[Excellent, concise guide for Raspberry Pi `docker` and `docker-compose`](https://jfrog.com/connect/post/install-docker-compose-on-raspberry-pi/)
-* [install docker](https://docs.docker.com/engine/install/)
+## Pre-requisites
+Make sure everything is up-to-date:
+`sudo apt-get update && sudo apt-get upgrade`
+* [Install Docker according to the docs](https://docs.docker.com/engine/install/debian/#install-using-the-convenience-script).  Curl
   `curl -fsSL https://get.docker.com -o get-docker.sh`
   `sudo sh get-docker.sh`: execute the install script with root priviledges
-  `sudo usermod -aG docker ${USER}`: add your user to the group Docker
-  `groups ${USER}`: Check that your user was successfully added
-* [Install `docker-compose`](https://docs.docker.com/compose/install/):
-  `sudo apt install docker-compose`
   
+  
+It is best practice to add your user to the Docker group so that containers can be run without requiring root priveleges.
+Verify regular user has permissions for docker:  
+`groups ${USER}`  
+If not, then go ahead and add your user to the group Docker (and verify that it was successful):
+`sudo usermod -aG docker pi && groups ${USER}`  
+(syntax: `sudo usermod -aG docker [user_name]`, in Raspberry Pi OS, the default user is 'pi')  
+  
+  *\*You must restart the user session (i.e., log out and back in) for this change to take effect.*
 
+## Docker compose:
+The latest versions of Docker Desktop actually have compose v2 built in to the command line interface (CLI).
+Docker Desktop for Linux is still in development, but we can add access to compose v2 through docker engine using the convenience script offered by the Docker team:
+Since this is being installed on a Raspberry Pi 4, we must substitute the url for the [latest build](https://github.com/docker/compose/releases) on 64-bit ARM architecture in place of x86-64, and execute the following command:
+`mkdir -p ~/.docker/cli-plugins/`  
+`curl -SL https://github.com/docker/compose/releases/download/v2.2.3/docker-compose-linux-aarch64 -o ~/.docker/cli-plugins/docker-compose`  
+`chmod +x ~/.docker/cli-plugins/docker-compose`: change the permissions on the binary to executable.
+`docker compose version`: Check that everything is installed.
 
 ## How to use it <br/>  Three steps
 - [ ] Copy project folder
@@ -45,7 +59,7 @@ If this is your first time with HA, you have to edit (or replace) just two files
 If you are restoring your existing HA setup, then additionally make sure to combine the lines from this repo's [`configuration.yaml`](hass-config/configuration.yaml) and `secrets.yaml` when restoring your own.  
 
 - The `.env` file holds variables that the `docker-compose` command will refer to when it builds the containers.  
-  First open the `.env` file within the base directory with your choice of text editor
+  First open the `.env.sample` file within the base directory with your choice of text editor:
   `cd home-assistant`
   `nano .env.sample`
   
@@ -55,12 +69,11 @@ If you are restoring your existing HA setup, then additionally make sure to comb
   PUID=1000
   PGID=1000
   ```
-  The default PUID and PGID should suitable, but change the passwords to something unique:
+  The default PUID and PGID (the User and Group ID under which Docker will run the Processes) should suitable on a Raspberry Pi, [if not](url)  
+  Be sure to change the passwords to something unique:
    
   After editing, using **Ctrl-O** will give you the option to save with a different filename.  Save without the suffix `.sample` and exit.
-  
-  >If you happened to save and close the files without renaming, you can rename them with the command `mv`, i.e.:  
-  `mv .env.sample .env` and `mv ~/ha-config/secrets.yaml.sample ~/ha-config/secrets.yaml.sample`  
+    
   
 - The [`secrets.yaml`](/hass-config/secrets.yaml.sample) file is used by Home Assistant looks in the `secrets.yaml` whenever it sees a `!secret` reference in the configuration.yaml file that you don't want to hold in `configuration.yaml`.
   by Home Assistant to store secrets needed for setup/interaction with the other software containers.
@@ -74,9 +87,12 @@ If you are restoring your existing HA setup, then additionally make sure to comb
   
   ha_db_url: "mysql://homeassistant:<ha_dbdatabasepassword>@<hostip>/ha_db?charset=utf8"
   ```
-  `<hostip>`: Is your hosts IP address on the network, replace it and <ha_dbdatabasepassword> with the value from your `.env` and exit after saving without the `.sample` suffix.
+  `<hostip>`: Is your hosts IP address on the network.  
+  `<ha_dbdatabasepassword>` is the the value from your `.env` file.  Edit these lines and exit after saving without the `.sample` suffix.
     
-  *You will have to make sure to otherwise remove the suffix `.sample` from these filenames*  
+  *You will have to make sure to remove the suffix `.sample` from these filenames or otherwise provide a `.env` and `secrets.yaml` of your own.* 
+  >If you happened to save and close the files without renaming, you can rename them with the command `mv`, i.e.:  
+  `mv .env.sample .env` and `mv ~/ha-config/secrets.yaml.sample ~/ha-config/secrets.yaml.sample`
   
 - [x] Copy project folder
 - [x] modify `.env.sample` and `secrets.yaml.sample`
@@ -84,49 +100,45 @@ If you are restoring your existing HA setup, then additionally make sure to comb
   
   
 ### `docker-compose`
-Make sure everything is up-to-date:
-`sudo apt-get update && sudo apt-get upgrade`  
-`sudo apt-get install docker`  
-`sudo apt-get install docker-compose`  
-
-[The guide I followed for the installation of Docker](https://phoenixnap.com/kb/docker-on-raspberry-pi) suggests adding Your user to the Docker group so that containers can be run without requiring root priveleges, which is generally considered [best practice](https://en.wikipedia.org/wiki/Principle_of_least_privilege).  
-Verify regular user has permissions for docker:  
-`groups ${USER}`  
-If not, then go ahead and enter the command:  
-`sudo usermod -aG docker pi`  (syntax: `sudo usermod -aG docker [user_name]`, in Raspberry Pi OS, the default user is 'pi')  
+Now the easy part!
+Make sure you're in the correct directory (so that docker can find the `docker-compose.yaml`)
+`cd ~/home-assistant/`
+`docker compose up -d`
+and attach yourself to the logs from any term whenever you'd like,`docker compose logs -f -t'  
   
-  *\*You must restart the user session (i.e., log out and back in) for this change to take effect.*
+If you'd prefer to have the output (logs, errors, etc.) from the containers attached displayed in your terminal window, leave off the `-d` (detached) flag:  
+`docker compose up`
 
- When you're ready to build your containers, navigate to the installation directory: `cd ~/home-assistant`
-  then:  
-`docker-compose up -d`
-```# Stop services only
-docker-compose stop
+```
+# Stop services only
+docker compose stop
 
 # Stop and remove containers, networks..
-docker-compose down
-
-docker-compose up --build 
-```
+docker compose down
+```   
 > Depending on your Linux distribution, [some of these applications may already be installed on the host system](https://iotechonline.com/home-assistant-install-with-docker-compose/?cn-reloaded=1#comment-346). To avoid conflicts, you will have to uninstall them first (e.g., `sudo apt-get remove mosquitto`)
 - [x] Copy project folder
 - [x] modify `.env.sample` and `secrets.yaml.sample`
 - [x] execute docker-compose  
+
 ## All done! :tada:
 If you open a web browser on the pi (or other computer on the LAN) you should now (or shortly) be able to navigate into the Home Assistant webserver at 'http://<hostip>:8123’
 to start onboarding.
-  
+
+https://www.zigbee2mqtt.io/guide/usage/integrations/home_assistant.html#mqtt-discovery
   
   
 ## FAQ's
 
 ### What is git? GitHub?
-  Git is a command-line tool, used by programmers to share/submit their code changes to a version controlled repository, so that when a bug crops up, or a software team decides to tackle a problem via a different route, the 5 W's (who, what, when, where, and why) that surround the code base are readily observable, because each change has been documented.  Github, as the name evokes, sprung up around that, and besides providing a easy, web-accessible UI, it aids collaborative development build by serving as ahas many tools and integrations useful for testing and building software.  With all these various tools, it turns out that GitHub can be useful for than just code, it's a platform used for [curated lists](https://github.com/folkswhocode/awesome-diversity), demos of [code snippets](https://gist.github.com/jbsulli/03df3cdce94ee97937ebda0ffef28287), sharing Animal Crossing: New Horizonds infographics, and even [hosting websites](www.kyleklitzing.com).
+  Git is a command-line tool, used by programmers to share/submit their code changes to a version controlled repository, so that when a bug crops up, or a software team decides to tackle a problem via a different route, the 5 W's (who, what, when, where, and why) that surround the code base are readily observable, because each change has been documented.  Github, as the name evokes, sprung up around that, and besides providing a easy, web-accessible UI, it aids collaborative development build by serving as ahas many tools and integrations useful for testing and building software.  With all these various tools, it turns out that GitHub can be useful for than just code, it's a platform used for [curated lists](https://github.com/folkswhocode/awesome-diversity), demos of [code snippets](https://gist.github.com/jbsulli/03df3cdce94ee97937ebda0ffef28287), sharing Animal Crossing: New Horizonds infographics, and even [hosting websites](www.kyleklitzing.com).  
+  
 ### What's the point of this repo? <br/> Why don't I just follow [the guide at iotechonline.com](https://iotechonline.com/home-assistant-install-with-docker-compose/)?
   You can! I created this repo for a few reasons:
   * to make it easier for others to setup a Home Assistant, Nodered, MQTT, SQL server!
   * so that replicating my setup in the future will be that much easier.  The docker-compose setup scheme for Home Assistant from Jere's guide assumes that you have this skeleton created on your system.  Rather than recreate it from scratch in the future, I instead created it within a GitHub repository.
-  * to learn (the best way for one to learn is to teach)
+  * to learn (the best way for one to learn is to teach)  
+  
 ### Isn't it dangerous to publicly share your configuration?
   Particularly with a public repository, you must make sure that no secrets are uploaded when the backing up the Home Assistant configuration to GitHub.  This would tantamount to posting one's passwords in a public forum.  To prevent this, I've added a `.gitignore` file to ensure that the sensitive files used in production (`.env` and `secrets.yaml`) **are _not_** uploaded to a git repository.  This means that you still need to find a safe place to backup your secrets file, even if in the future, like me, you decide to backup/share your Home Assistant configuration to GitHub.  
 *  **When you back up your setup, make sure to securely back up your secrets and passwords as well!**

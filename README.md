@@ -155,7 +155,9 @@ The reddit user luna87 [put it well](https://www.reddit.com/r/homeassistant/comm
 >If your previous efforts with Docker are still plaguing you, there is a nuclear option: `docker system prune --all --volumes`  
 >Make sure your `/hass-config/` folder is backed up first, **everything** will be wiped from the docker volumes/directories.
 
-
+### How does one go about flashing the firmware for Sonoff Zigbee 3.0 dongle?
+  [Mark Watt has a great video](https://www.youtube.com/watch?v=4jqQCxjlRDU), especially if one is installing these packages through Home Assistant OS, which has a built in manager for official add-ons.
+  
 ### What are these `.keep` files?
 Because [`git` tracks content, not directories.](https://markmail.org/message/4eqjxx73opiswfis), I have included empty files named `.keep` to the leaf nodes of the (otherwise) empty directories, so that the structure is preserved within the git repository.  Contrary to the name, they don't have to be kept, and can safely be either ignored or deleted.
 

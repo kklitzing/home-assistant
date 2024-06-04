@@ -1,5 +1,5 @@
 # home-assistant
-[In this repository](https://github.com/kklitzing/home-assistant/), I have layed out the barebones 'skeleton' for a docker-compose setup of Home Assistant. My Home Assistant installation is modelled after this [very clear guide](https://iotechonline.com/home-assistant-install-with-docker-compose/) from Jere's website iotechonline.com.  
+[In this repository](https://github.com/kklitzing/home-assistant/), I have layed out the barebones 'skeleton' for a docker-compose setup of Home Assistant on a Raspberry Pi 4 microcomputer. My Home Assistant installation is modelled after this [very clear guide](https://iotechonline.com/home-assistant-install-with-docker-compose/) from Jere's website iotechonline.com.  
 This guide will get you all the way to the Home Assistant onboarding script.  
 
 ## Pre-requisites
